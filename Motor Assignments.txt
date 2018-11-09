@@ -1,0 +1,18 @@
+Robot Hardware Pieces
+
+Controller1
+Brain
+
+FrontLeft - Port 1
+[REVERSED] FrontRight - Port 2
+BackLeft - Port 3
+[REVERSED] BackRight - Port 4
+
+PuncherLeft - Port 11
+PuncherRight - Port 12
+
+Intake - Port 6
+
+CapFlipper - Port 5
+
+AutonSelect - 3 pin B
