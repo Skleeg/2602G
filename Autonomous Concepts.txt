@@ -1,0 +1,32 @@
+  /*switch (auton)
+  {
+    case 1:
+        //g
+        break;
+    case 2:
+        //o
+        break;
+    case 3:
+        //o
+        break;
+    case 4:
+        //d
+        break;
+    default:
+        break;
+  } */
+    
+    /*if(AutonSelect.value(percentUnits::pct) > 98)
+    {
+        FrontLeft.spin(vex::directionType::fwd);
+        FrontRight.spin(vex::directionType::fwd);
+        BackLeft.spin(vex::directionType::fwd);
+        BackRight.spin(vex::directionType::fwd);
+    }
+    else if(AutonSelect.value(percentUnits::pct) < 97 || AutonSelect.value(percentUnits::pct) > 80)
+    {
+        FrontLeft.spin(vex::directionType::rev);
+        FrontRight.spin(vex::directionType::rev);
+        BackLeft.spin(directionType::rev);
+        BackRight.spin(directionType::rev);
+    }*/
