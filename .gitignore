@@ -2,3 +2,8 @@
 
 VCS4CMD.py
 notvsc.py
+
+#Ignore the .vex files, as they create issues
+
+CompetitionTest.vex
+2602G.vex

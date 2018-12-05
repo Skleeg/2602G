@@ -1,5 +1,4 @@
 #include "robot-config.h"
-//comment to see if this works (pls)
 
 int auton = 1; //Autonomous selection
 
