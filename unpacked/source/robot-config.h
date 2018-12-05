@@ -1,0 +1,13 @@
+using namespace vex;
+vex::brain Brain;
+vex::motor BackRight (vex::PORT1, vex::gearSetting::ratio18_1,true);
+vex::motor Intake (vex::PORT6, vex::gearSetting::ratio18_1,false);
+vex::motor Postscorer (vex::PORT7, vex::gearSetting::ratio18_1,false);
+vex::motor PuncherRight (vex::PORT8, vex::gearSetting::ratio18_1,false);
+vex::motor PuncherLeft (vex::PORT9, vex::gearSetting::ratio18_1,false);
+vex::motor BackLeft (vex::PORT10, vex::gearSetting::ratio18_1,false);
+vex::motor FrontRight (vex::PORT11, vex::gearSetting::ratio18_1,true);
+vex::motor FrontLeft (vex::PORT20, vex::gearSetting::ratio18_1,false);
+vex::pot AutonSelect( Brain.ThreeWirePort.B);
+vex::controller Controller1;
+vex::competition Competition;
