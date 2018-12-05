@@ -1,0 +1,5 @@
+To unpack a file and edit it as .cpp or to use in Atom, etc., do "python3 VCS4CMD.py --file FILE_NAME -u" without quotes.
+
+To repack a file and deploy it from VCS, do "python3 VCS4CMD.py --file FILE_NAME -r" without quotes.
+
+To open said file from terminal, do "open FILE_NAME".

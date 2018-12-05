@@ -40,7 +40,7 @@ int velocityCoef = 1;
         }
         //NOTE: intakeControl is toggled, and has to be braked
 
-        
+
         //NOTE: used to shorten brake function, retype for other brake types
         void wheelBrake()
         {
@@ -70,7 +70,7 @@ void pre_auton( void ) {
     Brain.Screen.print("Battery Temperature: %d", Brain.Battery.temperature());
     Brain.Screen.newLine();
     Brain.Screen.setPenWidth(5);
-    
+
     while(1 == 1)
     {
         if(Brain.Screen.pressing())
@@ -122,18 +122,17 @@ void pre_auton( void ) {
             Brain.Screen.printAt(50,150,"                                    ");
             Brain.Screen.printAt(50,150,"Auton Program: Brake");
         }
-        
-        
+
         task::sleep(500);
     }
 }
-    
+
 
 void autonomous( void ) {
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(50,120,"                                    ");
   Brain.Screen.printAt(50,150,"                                    ");
-  
+
   FrontLeft.setVelocity(200,velocityUnits::rpm);
   FrontRight.setVelocity(200,velocityUnits::rpm);
   BackLeft.setVelocity(200,velocityUnits::rpm);
@@ -141,7 +140,7 @@ void autonomous( void ) {
   PuncherLeft.setVelocity(200,velocityUnits::rpm);
   PuncherRight.setVelocity(200,velocityUnits::rpm);
   Intake.setVelocity(200,velocityUnits::rpm);
-    
+
   switch(auton)
   {
       case 1: //BLUE FAR
@@ -165,7 +164,7 @@ void autonomous( void ) {
             PuncherRight degrees
           */
           //NOTE: Change the rotation unit? Revolutions might work better
-          
+
           wheelStraight(180, 180);
           task::sleep(1000);
           wheelBrake();
@@ -176,96 +175,95 @@ void autonomous( void ) {
           wheelTurn(1150, -1150);
           wheelBrake();
           break;
-          
+
       case 2: //BLUE NEAR
           break;
-      
+
       case 3: //RED FAR
           wheelStraight(360, 360);
           task::sleep(1000);
           wheelBrake();
-          
+
           punchControl(1000, 1000);
           task::sleep(1000);
-          
+
           wheelStraight(180, 180);
           task::sleep(1000);
           wheelBrake();
           break;
-          
+
       case 4: //RED NEAR
           wheelBrake();
           break;
-          
+
       case 5: //STAY IN PLACE
           handBrake();
           break;
-          
+
       case 6: //red side double cap (hopefully lmao)
           wheelStraight(1150, 1150); //drive forward to flip flag
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(-1150, -1150); //returns to red tile
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelTurn(720, -720 /*left side, right side*/); //turns to the right
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(500, 500); //drives forward to cap
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(-250, -250); //moves back a wee bit
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelTurn(-200, 200); //turns to face the other cap
           task::sleep(1000);
           wheelBrake();
-          
+
       case 7: //blue side double cap flip (probably not lol)
           wheelStraight(1150, 1150);
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(-1150, -1150);
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelTurn(-720, 720);
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(500, 500);
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelStraight(-250, -250);
           task::sleep(1000);
           wheelBrake();
-          
+
           wheelTurn(200, -200);
           task::sleep(1000);
           wheelBrake();
-          
-          
+
+
       default: //Error
           Brain.Screen.clearScreen();
           Brain.Screen.printAt(1,1,"Invalid Autonomous Selection");
           handBrake();
           break;
   }
-  
+
     task::sleep(1000);
 }
 
 void usercontrol( void ) {
     int velocityVar = 200;
-    
-    
+
     PuncherLeft.setVelocity(velocityVar,velocityUnits::rpm);
     PuncherRight.setVelocity(velocityVar,velocityUnits::rpm);
     Intake.setVelocity(200,velocityUnits::rpm);
@@ -274,7 +272,7 @@ void usercontrol( void ) {
     FrontRight.setVelocity(velocityVar,velocityUnits::rpm);
     BackLeft.setVelocity(velocityVar,velocityUnits::rpm);
     BackRight.setVelocity(velocityVar,velocityUnits::rpm);
-    
+
     Brain.Screen.clearScreen();
     Brain.Screen.newLine();
     Brain.Screen.print("party rockers in the hou");
@@ -283,7 +281,7 @@ void usercontrol( void ) {
     Brain.Screen.newLine();
     Brain.Screen.newLine();
     Brain.Screen.print("Make sure to reset puncher gear.");
-  while (1){   
+  while (1){
 
     velocityVar = 200 / velocityCoef;
     /*
@@ -291,17 +289,26 @@ void usercontrol( void ) {
       Might work now that it's inside loop
       Probably need to put other stuff in loop to work right.
     */
-      
-    
+
+
     //=======================Joystick / drive motor controls=======================
     FrontRight.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
     FrontLeft.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
     BackRight.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
     BackLeft.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
+
+    while(Controller1.ButtonX.pressing())
+    {
+        FrontRight.spin(vex::directionType::fwd, -Controller1.Axis2.value(), vex::velocityUnits::pct);
+        FrontLeft.spin(vex::directionType::fwd, -Controller1.Axis3.value(), vex::velocityUnits::pct);
+        BackRight.spin(vex::directionType::fwd, -Controller1.Axis2.value(), vex::velocityUnits::pct);
+        BackLeft.spin(vex::directionType::fwd, -Controller1.Axis3.value(), vex::velocityUnits::pct);
+
+    }
     //=======================Joystick / drive motor controls=======================
-      
-    
-    //=======================Puncher motor controls======================= 
+
+
+    //=======================Puncher motor controls=======================
     if(Controller1.ButtonR1.pressing())
     {
         PuncherLeft.spin(vex::directionType::rev);
@@ -319,9 +326,9 @@ void usercontrol( void ) {
     }
     //=======================Puncher motor controls=======================
     //NOTE: Make sure to reset puncher after every match.
-      
-      
-    //=======================Intake motor controls=======================  
+
+
+    //=======================Intake motor controls=======================
     if(Controller1.ButtonL1.pressing())
     {
         Intake.spin(vex::directionType::rev);
@@ -335,9 +342,9 @@ void usercontrol( void ) {
         Intake.stop(brakeType::coast);
     }
     //=======================Intake motor controls=======================
-    
-    
-    //=======================Cap Flipper motor controls=======================  
+
+
+    //=======================Cap Flipper motor controls=======================
     if(Controller1.ButtonUp.pressing())
     {
         CapDescore.spin(vex::directionType::fwd);
@@ -351,44 +358,44 @@ void usercontrol( void ) {
         CapDescore.stop(brakeType::coast);
     }
     //=======================Cap Flipper motor controls=======================
-      
-      
+
+
     //=======================Speed incrementing controls=======================
     if(Controller1.ButtonRight.pressing())
     {
-        velocityCoef = 1; 
+        velocityCoef = 1;
     }
-      
+
     if(Controller1.ButtonLeft.pressing())
     {
             velocityCoef = 2;
-    }  
-    //=======================Speed incrementing controls=======================  
-    
-      
+    }
+    //=======================Speed incrementing controls=======================
+
+
     //======================="Handbrake-but-not-really" controls=======================
     if(Controller1.ButtonB.pressing())
     {
         handBrake();
     }
     //======================="Handbrake-but-not-really" controls=======================
-      
-      
-    vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
+
+
+    vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources.
   }
 }
 
 int main() {
     pre_auton();
-    
+
     //Set up callbacks for autonomous and driver control periods.
     Competition.autonomous( autonomous );
-        
+
     Competition.drivercontrol( usercontrol );
-                    
+
     while(1) {
-        
+
     vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
-    }    
-    
+    }
+
 }
