@@ -22,13 +22,13 @@ int velocityCoef = 1;
             BackLeft.startRotateFor(Ldeg,rotationUnits::deg);
             BackRight.startRotateFor(Rdeg,rotationUnits::deg);
         }
+        //NOTE: Use this for when each wheel needs independent control
 
 
         //NOTE: puncherControl is used w/ degrees. 1000 degrees is about one shot
         void punchControl (int punchLdeg, int punchRdeg)
         {
             PuncherRight.startRotateFor(punchRdeg,rotationUnits::deg);
-            PuncherLeft.startRotateFor(punchLdeg,rotationUnits::deg);
         }
         //NOTE: puncherControl is used w/ degrees. 1000 degrees is about one shot
 
@@ -137,7 +137,6 @@ void autonomous( void ) {
   FrontRight.setVelocity(200,velocityUnits::rpm);
   BackLeft.setVelocity(200,velocityUnits::rpm);
   BackRight.setVelocity(200,velocityUnits::rpm);
-  PuncherLeft.setVelocity(200,velocityUnits::rpm);
   PuncherRight.setVelocity(200,velocityUnits::rpm);
   Intake.setVelocity(200,velocityUnits::rpm);
 
@@ -160,7 +159,6 @@ void autonomous( void ) {
           //Iterates the ball launcher once.
           //NOTE: Sequence of values is:
           /*
-            PuncherLeft degrees
             PuncherRight degrees
           */
           //NOTE: Change the rotation unit? Revolutions might work better
@@ -264,10 +262,10 @@ void autonomous( void ) {
 void usercontrol( void ) {
     int velocityVar = 200;
 
-    PuncherLeft.setVelocity(velocityVar,velocityUnits::rpm);
     PuncherRight.setVelocity(velocityVar,velocityUnits::rpm);
     Intake.setVelocity(200,velocityUnits::rpm);
-    CapDescore.setVelocity(100,velocityUnits::rpm);
+    CapMoveRight.setVelocity(100,velocityUnits::rpm);
+    CapMoveLeft.setVelocity(100,velocityUnits::rpm);
     FrontLeft.setVelocity(velocityVar,velocityUnits::rpm);
     FrontRight.setVelocity(velocityVar,velocityUnits::rpm);
     BackLeft.setVelocity(velocityVar,velocityUnits::rpm);
@@ -311,17 +309,14 @@ void usercontrol( void ) {
     //=======================Puncher motor controls=======================
     if(Controller1.ButtonR1.pressing())
     {
-        PuncherLeft.spin(vex::directionType::rev);
         PuncherRight.spin(vex::directionType::fwd);
     }
     else if(Controller1.ButtonR2.pressing())
     {
-        PuncherLeft.spin(vex::directionType::fwd);
         PuncherRight.spin(vex::directionType::rev);
     }
     else
     {
-        PuncherLeft.stop(brakeType::hold);
         PuncherRight.stop(brakeType::hold);
     }
     //=======================Puncher motor controls=======================
@@ -347,15 +342,20 @@ void usercontrol( void ) {
     //=======================Cap Flipper motor controls=======================
     if(Controller1.ButtonUp.pressing())
     {
-        CapDescore.spin(vex::directionType::fwd);
+        CapMoveRight.spin(vex::directionType::fwd);
+        CapMoveLeft.spin(vex::directionType::fwd);
     }
     else if(Controller1.ButtonDown.pressing())
     {
-        CapDescore.spin(vex::directionType::rev);
+        CapMoveRight.spin(vex::directionType::rev);
+        CapMoveLeft.spin(vex::directionType::rev);
+
     }
     else
     {
-        CapDescore.stop(brakeType::coast);
+        CapMoveRight.stop(brakeType::coast);
+        CapMoveLeft.stop(brakeType::coast);
+
     }
     //=======================Cap Flipper motor controls=======================
 
