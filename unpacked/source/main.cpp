@@ -28,7 +28,8 @@ int velocityCoef = 1;
         //NOTE: puncherControl is used w/ degrees. 1000 degrees is about one shot
         void punchControl (int punchLdeg, int punchRdeg)
         {
-            PuncherRight.startRotateFor(punchRdeg,rotationUnits::deg);
+            Puncher.startRotateFor(punchRdeg,rotationUnits::deg);
+            PuncherL.startRotateFor(punchLdeg,rotationUnits::deg);
         }
         //NOTE: puncherControl is used w/ degrees. 1000 degrees is about one shot
 
@@ -129,16 +130,17 @@ void pre_auton( void ) {
 
 
 void autonomous( void ) {
-  Brain.Screen.clearScreen();
-  Brain.Screen.printAt(50,120,"                                    ");
-  Brain.Screen.printAt(50,150,"                                    ");
+      Brain.Screen.clearScreen();
+      Brain.Screen.printAt(50,120,"                                    ");
+      Brain.Screen.printAt(50,150,"                                    ");
 
-  FrontLeft.setVelocity(200,velocityUnits::rpm);
-  FrontRight.setVelocity(200,velocityUnits::rpm);
-  BackLeft.setVelocity(200,velocityUnits::rpm);
-  BackRight.setVelocity(200,velocityUnits::rpm);
-  PuncherRight.setVelocity(200,velocityUnits::rpm);
-  Intake.setVelocity(200,velocityUnits::rpm);
+      FrontLeft.setVelocity(200,velocityUnits::rpm);
+      FrontRight.setVelocity(200,velocityUnits::rpm);
+      BackLeft.setVelocity(200,velocityUnits::rpm);
+      BackRight.setVelocity(200,velocityUnits::rpm);
+      Puncher.setVelocity(200,velocityUnits::rpm);
+			PuncherL.setVelocity(200,velocityUnits::rpm);
+      Intake.setVelocity(200,velocityUnits::rpm);
 
   switch(auton)
   {
@@ -159,6 +161,7 @@ void autonomous( void ) {
           //Iterates the ball launcher once.
           //NOTE: Sequence of values is:
           /*
+						PuncherL degrees
             PuncherRight degrees
           */
           //NOTE: Change the rotation unit? Revolutions might work better
@@ -170,11 +173,12 @@ void autonomous( void ) {
           //THE PUNCHER SLIP GEAR REQUIRES MORE TEETH TO BE SHAVED OFF
           wheelStraight(-1150, -1150);
           task::sleep(1000);
-          wheelTurn(1150, -1150);
+          //wheelTurn(1150, -1150);
           wheelBrake();
           break;
 
       case 2: //BLUE NEAR
+	  	  wheelBrake();
           break;
 
       case 3: //RED FAR
@@ -199,7 +203,18 @@ void autonomous( void ) {
           break;
 
       case 6: //red side double cap (hopefully lmao)
-          wheelStraight(1150, 1150); //drive forward to flip flag
+	  	  Intake.spin(directionType::fwd); //Just turns on the intake, too lazy to figure out timing
+																				 //Direction of the motor spinning might need to be changed
+
+		  /*
+		  	To whoever is reading,
+				Feel free to add the intake functions later on in the code
+				For simplicity, I just turned on the intake at the beginning of the autonomous
+				Might work, might not
+				Change if need be
+			*/
+
+		  wheelStraight(1150, 1150); //drive forward to flip flag
           task::sleep(1000);
           wheelBrake();
 
@@ -215,6 +230,8 @@ void autonomous( void ) {
           task::sleep(1000);
           wheelBrake();
 
+		  //TODO: Add function to iterate the intake
+
           wheelStraight(-250, -250); //moves back a wee bit
           task::sleep(1000);
           wheelBrake();
@@ -223,30 +240,51 @@ void autonomous( void ) {
           task::sleep(1000);
           wheelBrake();
 
+		  wheelStraight(250, 250); //drives forward to the other cap
+		  task::sleep(1000);
+		  wheelBrake();
+
+		  //TODO: Add function to iterate the intake
+
       case 7: //blue side double cap flip (probably not lol)
-          wheelStraight(1150, 1150);
+					Intake.spin(directionType::fwd); //Just turns on the intake, too lazy to figure out timing
+																					 //Direction of the motor spinning might need to be changed
+
+					/*
+				  	To whoever is reading,
+						Feel free to add the intake functions later on in the code
+						For simplicity, I just turned on the intake at the beginning of the autonomous
+						Might work, might not
+						Change if need be
+					*/
+
+          wheelStraight(1150, 1150); //drive forward to flip flag
           task::sleep(1000);
           wheelBrake();
 
-          wheelStraight(-1150, -1150);
+          wheelStraight(-1150, -1150); //return to blue tile
           task::sleep(1000);
           wheelBrake();
 
-          wheelTurn(-720, 720);
+          wheelTurn(-720, 720); //turns to the left
           task::sleep(1000);
           wheelBrake();
 
-          wheelStraight(500, 500);
+          wheelStraight(500, 500); //drives forward to cap
           task::sleep(1000);
           wheelBrake();
 
-          wheelStraight(-250, -250);
+		  //TODO: Add function to iterate the intake
+
+          wheelStraight(-250, -250); //moves back slightly
           task::sleep(1000);
           wheelBrake();
 
-          wheelTurn(200, -200);
+          wheelTurn(200, -200); //turns to face the other cap
           task::sleep(1000);
           wheelBrake();
+
+		  //TODO: Add function to iterate the intake
 
 
       default: //Error
@@ -254,6 +292,8 @@ void autonomous( void ) {
           Brain.Screen.printAt(1,1,"Invalid Autonomous Selection");
           handBrake();
           break;
+		  //All this does is just display an error message and prevent the robot from moving
+
   }
 
     task::sleep(1000);
@@ -262,7 +302,8 @@ void autonomous( void ) {
 void usercontrol( void ) {
     int velocityVar = 200;
 
-    PuncherRight.setVelocity(velocityVar,velocityUnits::rpm);
+    Puncher.setVelocity(200,velocityUnits::rpm);
+		PuncherL.setVelocity(200,velocityUnits::rpm);
     Intake.setVelocity(200,velocityUnits::rpm);
     CapMoveRight.setVelocity(100,velocityUnits::rpm);
     CapMoveLeft.setVelocity(100,velocityUnits::rpm);
@@ -279,6 +320,7 @@ void usercontrol( void ) {
     Brain.Screen.newLine();
     Brain.Screen.newLine();
     Brain.Screen.print("Make sure to reset puncher gear.");
+
   while (1){
 
     velocityVar = 200 / velocityCoef;
@@ -295,29 +337,29 @@ void usercontrol( void ) {
     BackRight.spin(vex::directionType::fwd, Controller1.Axis2.value(), vex::velocityUnits::pct);
     BackLeft.spin(vex::directionType::fwd, Controller1.Axis3.value(), vex::velocityUnits::pct);
 
-    while(Controller1.ButtonX.pressing())
+    /*while(Controller1.ButtonX.pressing())
     {
         FrontRight.spin(vex::directionType::fwd, -Controller1.Axis2.value(), vex::velocityUnits::pct);
         FrontLeft.spin(vex::directionType::fwd, -Controller1.Axis3.value(), vex::velocityUnits::pct);
         BackRight.spin(vex::directionType::fwd, -Controller1.Axis2.value(), vex::velocityUnits::pct);
         BackLeft.spin(vex::directionType::fwd, -Controller1.Axis3.value(), vex::velocityUnits::pct);
 
-    }
+    }*/
     //=======================Joystick / drive motor controls=======================
 
 
     //=======================Puncher motor controls=======================
-    if(Controller1.ButtonR1.pressing())
+    if(Controller1.ButtonY.pressing())
     {
-        PuncherRight.spin(vex::directionType::fwd);
+        Puncher.spin(vex::directionType::fwd);
     }
     else if(Controller1.ButtonR2.pressing())
     {
-        PuncherRight.spin(vex::directionType::rev);
+        Puncher.spin(vex::directionType::rev);
     }
     else
     {
-        PuncherRight.stop(brakeType::hold);
+        Puncher.stop(brakeType::coast);
     }
     //=======================Puncher motor controls=======================
     //NOTE: Make sure to reset puncher after every match.
